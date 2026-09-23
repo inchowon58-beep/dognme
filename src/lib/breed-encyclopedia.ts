@@ -28,5 +28,7 @@ function fallbackEncyclopedia(breed: Breed): BreedEncyclopedia {
 }
 
 export function getEncyclopedia(breed: Breed): BreedEncyclopedia {
+  const bySlug = CAT_ENCYCLOPEDIA[breed.slug] || DOG_ENCYCLOPEDIA[breed.slug];
+  if (bySlug) return bySlug;
   return CAT_ENCYCLOPEDIA[breed.folder] || DOG_ENCYCLOPEDIA[breed.folder] || fallbackEncyclopedia(breed);
 }

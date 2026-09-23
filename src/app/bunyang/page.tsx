@@ -5,6 +5,7 @@ import { breedCover } from "@/lib/breed-images";
 import { breedPath } from "@/lib/breed-paths";
 import { SITE } from "@/lib/site";
 import { publicPageUrl } from "@/lib/public-url";
+import CollapsibleLinkSection from "@/app/components/CollapsibleLinkSection";
 
 export const revalidate = 86400;
 
@@ -36,23 +37,38 @@ export default function BunyangIndexPage() {
         전국 견종·묘종 분양 안내
       </h1>
       <p className="mt-4 max-w-2xl text-[var(--muted)]">
-        시·도, 시·군·구, 동 단위로 {SITE.brand} 건강 분양 안내를 이어 드립니다. 품종을 고르시면
-        해당 색감의 지역 페이지로 이동합니다.
+        서울·부산·대전·경기 등 시·도, 시·군·구, 동 단위로 {SITE.brand} 분양 안내를 이어 드립니다.
+        품종을 펼쳐 보고 해당 페이지로 이동하세요.
       </p>
 
-      {[
-        { title: `견종 ${dogs.length}종`, items: dogs },
-        { title: `묘종 ${cats.length}종`, items: cats },
-        { title: "보호소", items: shelters },
-      ].map((group) => (
-        <section key={group.title} className="mt-12">
-          <h2 className="text-2xl font-extrabold text-[var(--navy)]">{group.title}</h2>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {group.items.map((b) => (
+      <div className="mt-10 space-y-3">
+        <CollapsibleLinkSection
+          title={`견종 ${dogs.length}종`}
+          defaultOpen
+          items={dogs.map((b) => ({ href: breedPath(b.slug), label: b.name }))}
+        />
+        <CollapsibleLinkSection
+          title={`묘종 ${cats.length}종`}
+          items={cats.map((b) => ({ href: breedPath(b.slug), label: b.name }))}
+        />
+        <CollapsibleLinkSection
+          title="보호소"
+          items={shelters.map((b) => ({ href: breedPath(b.slug), label: b.name }))}
+        />
+      </div>
+
+      <details className="dm-fold mt-12">
+        <summary className="dm-fold-summary">
+          <span>품종 카드 미리보기</span>
+          <em>{BREEDS.length}종</em>
+        </summary>
+        <div className="dm-fold-body">
+          <div className="grid gap-4 pt-2 sm:grid-cols-2 lg:grid-cols-3">
+            {BREEDS.map((b) => (
               <Link
                 key={b.slug}
                 href={breedPath(b.slug)}
-                className="group overflow-hidden rounded-[1.1rem] border border-[var(--line)] bg-white transition hover:-translate-y-0.5"
+                className="group overflow-hidden rounded-2xl border border-[var(--line)] bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
                 style={{ borderColor: `${b.palette.accent}44` }}
               >
                 <div className="relative aspect-[16/9] overflow-hidden">
@@ -80,8 +96,8 @@ export default function BunyangIndexPage() {
               </Link>
             ))}
           </div>
-        </section>
-      ))}
+        </div>
+      </details>
     </div>
   );
 }

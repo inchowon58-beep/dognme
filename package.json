@@ -1,5 +1,5 @@
 {
-  "name": "dearpet",
+  "name": "dognme",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check:deploy-target": "node scripts/ensure-dearpet.cjs",
-    "deploy:prod": "node scripts/ensure-dearpet.cjs && vercel --prod --yes"
+    "check:deploy-target": "node scripts/ensure-dognme.cjs",
+    "deploy:prod": "node scripts/ensure-dognme.cjs && vercel --prod --yes"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",

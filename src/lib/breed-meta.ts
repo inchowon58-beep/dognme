@@ -3,24 +3,45 @@ import type { Breed } from "./breeds";
 import { kindKo } from "./breeds";
 import { breedGalleryCards } from "./breed-images";
 import { buildBreedContent, placeLabel } from "./breed-content";
-import { breedPath } from "./breed-paths";
+import {
+  applyNationalHubContent,
+  buildBreedTopicContent,
+  type BreedTopicSlug,
+} from "./breed-topics";
+import { breedPath, breedTopicPath } from "./breed-paths";
 import { SITE } from "./site";
 
 export const BREED_REVALIDATE = 86400;
+
+function resolveContent(
+  breed: Breed,
+  sido?: string,
+  sigungu?: string,
+  dong?: string,
+  topic?: BreedTopicSlug
+) {
+  if (topic) return buildBreedTopicContent(breed, topic);
+  const base = buildBreedContent(breed, sido, sigungu, dong);
+  if (!sido && !sigungu && !dong) return applyNationalHubContent(base, breed);
+  return base;
+}
 
 export function breedMetadata(
   breed: Breed,
   origin: string,
   sido?: string,
   sigungu?: string,
-  dong?: string
+  dong?: string,
+  topic?: BreedTopicSlug
 ): Metadata {
-  const content = buildBreedContent(breed, sido, sigungu, dong);
-  const place = placeLabel(sido, sigungu, dong);
-  const salt = [sido, sigungu, dong].filter(Boolean).join("_");
+  const content = resolveContent(breed, sido, sigungu, dong, topic);
+  const place = topic ? breed.name : placeLabel(sido, sigungu, dong);
+  const salt = [topic, sido, sigungu, dong].filter(Boolean).join("_");
   const gallery = breedGalleryCards(breed, salt, 5);
   const images = gallery.map((c) => c.src);
-  const url = origin + breedPath(breed.slug, sido, sigungu, dong);
+  const url = topic
+    ? origin + breedTopicPath(breed.slug, topic)
+    : origin + breedPath(breed.slug, sido, sigungu, dong);
   const ogImages = gallery.map((card) => ({
     url: card.src,
     width: 800,
@@ -34,7 +55,7 @@ export function breedMetadata(
     keywords: content.keywords,
     alternates: { canonical: url },
     openGraph: {
-      title: `${place} ${breed.name} 분양`,
+      title: content.title,
       description: content.description,
       url,
       type: "article",
@@ -44,7 +65,7 @@ export function breedMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title: `${place} ${breed.name} 분양`,
+      title: content.title,
       description: content.description,
       images,
     },
@@ -61,12 +82,15 @@ export function breedJsonLd(
   origin: string,
   sido?: string,
   sigungu?: string,
-  dong?: string
+  dong?: string,
+  topic?: BreedTopicSlug
 ) {
-  const content = buildBreedContent(breed, sido, sigungu, dong);
-  const place = placeLabel(sido, sigungu, dong);
-  const salt = [sido, sigungu, dong].filter(Boolean).join("_");
-  const url = origin + breedPath(breed.slug, sido, sigungu, dong);
+  const content = resolveContent(breed, sido, sigungu, dong, topic);
+  const place = topic ? breed.name : placeLabel(sido, sigungu, dong);
+  const salt = [topic, sido, sigungu, dong].filter(Boolean).join("_");
+  const url = topic
+    ? origin + breedTopicPath(breed.slug, topic)
+    : origin + breedPath(breed.slug, sido, sigungu, dong);
   const gallery = breedGalleryCards(breed, salt, 5);
   const images = gallery.map((c) => c.src);
 
@@ -75,6 +99,14 @@ export function breedJsonLd(
     { "@type": "ListItem", position: 2, name: "견종·묘종 분양", item: `${origin}/bunyang` },
     { "@type": "ListItem", position: 3, name: breed.name, item: origin + breedPath(breed.slug) },
   ];
+  if (topic) {
+    crumbs.push({
+      "@type": "ListItem",
+      position: crumbs.length + 1,
+      name: `${breed.name}${topic}`,
+      item: url,
+    });
+  }
   if (sido) {
     crumbs.push({
       "@type": "ListItem",

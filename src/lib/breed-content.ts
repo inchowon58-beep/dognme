@@ -3,7 +3,7 @@ import { kindKo, relatedBreeds, sizeClass } from "./breeds";
 import { getEncyclopedia } from "./breed-encyclopedia";
 import type { GuideFact } from "./breed-encyclopedia";
 import { eulReul, eunNeun, euroRo, iGa, iraRa } from "./korean";
-import { areaLabel } from "./korea-regions";
+import { areaLabel, displaySido } from "./korea-regions";
 import { buildLocalRegionFacts, type LocalRegionFacts } from "./local-region-facts";
 import { SITE } from "./site";
 
@@ -83,7 +83,7 @@ function shuffle<T>(arr: T[], seed: number): T[] {
 export function placeLabel(sido?: string, sigungu?: string, dong?: string): string {
   if (dong) return dong;
   if (sigungu) return sigungu;
-  if (sido) return sido;
+  if (sido) return displaySido(sido);
   return "전국";
 }
 
@@ -115,21 +115,21 @@ export function buildBreedContent(
   const salesStat = localFacts.stats.find((s) => s.label === "분양 등록업체")?.value || "";
   const hospitalStat = localFacts.stats.find((s) => s.label === "병원 수")?.value || "";
 
-  const kicker = `${place} · ${name} 분양 가이드`;
+  const kicker = `${place} · ${name} 함께 살기 전 체크리스트`;
 
   const h1 = pick(
     [
-      `믿을 수 있는 ${place}${name}분양, 건강 확인부터 인계 이후까지`,
-      `${place} ${name}분양, 기준을 먼저 세우고 천천히 진행합니다`,
-      `${place}에서 시작하는 ${name} 분양 — 처음부터 끝까지 안내`,
-      `${admin} ${name}분양, 외모보다 컨디션과 기록을 먼저 봅니다`,
-      `${place} ${kw}, 집 환경과 생활 리듬에 맞춰 고르는 법`,
+      `${place} ${name} 분양 — 우리 집과 맞는 아이 찾기`,
+      `${place}에서 ${name} 키우기, 알아두면 좋은 것들`,
+      `${admin} ${name} 분양, 사진보다 먼저 볼 것`,
+      `${place} ${kw}, 생활 리듬에 맞춰 고르는 방법`,
+      `${name}과 함께할 ${place} 집, 준비부터 차근차근`,
     ],
     seed
   );
 
-  const title = `${place} ${name} 분양 - ${admin} 안내`;
-  const localH2 = `${place} 지역 ${name} 분양, 이 동네는 어떤 곳인가`;
+  const title = `${place} ${name} 분양 | ${admin} 안내`;
+  const localH2 = `${place} ${name} 분양, 이 지역에서 알아두면 좋은 점`;
   const description = (
     dong
       ? `${dong}(${sido} ${sigungu}) ${name} 분양. 병원 ${hospitalStat}, 판매업 ${salesStat}. ${SITE.brand} 안내.`
@@ -142,9 +142,9 @@ export function buildBreedContent(
 
   const lead = pick(
     [
-      `건강 확인부터 인계, 그 이후 관리까지 — ${place} ${name}분양을 원스톱으로 안내합니다.`,
-      `${place}에서 ${name}${eulReul(name)} 가족으로 맞이하기 전, 기준과 집 준비부터 함께 짚습니다.`,
-      `${admin} ${kw}는 예쁜 사진만으로 결정하지 않습니다. 컨디션과 기록이 먼저입니다.`,
+      `${place}에서 ${name}${eulReul(name)} 만나기 전, 집 환경·건강·성격을 차근차근 짚어 드립니다.`,
+      `도그앤미는 ${place} ${kw}를 사진 한 장으로 결정하지 않습니다. 컨디션과 기록부터 확인하세요.`,
+      `${admin} ${name} 분양 — 처음 키우시는 분도 따라올 수 있게 단계별로 안내합니다.`,
     ],
     seed + 1
   );
@@ -447,9 +447,9 @@ export function buildBreedContent(
 
   const closerH2 = pick(
     [
-      `건강하게, 안심하고 시작하는 ${place}${name}분양`,
-      `${place} ${name}분양, 기준을 세운 뒤에 만나 보세요`,
-      `${admin}에서 ${name}과 오래 가는 첫 주를 준비합니다`,
+      `${place} ${name} 분양, 서두르지 않아도 괜찮아요`,
+      `${place}에서 ${name}과 함께할 준비, 차근차근`,
+      `${admin} ${name} 분양 — 첫 주가 편해지도록 도와 드릴게요`,
     ],
     seed + 21
   );
@@ -473,7 +473,7 @@ export function buildBreedContent(
     lead,
     intro,
     profile: {
-      h2: `${name} 품종 요약`,
+      h2: `${name} 이런 아이예요`,
       cards: [
         { label: "체구", value: size },
         { label: "털", value: breed.coat },
@@ -490,36 +490,36 @@ export function buildBreedContent(
     steps: [
       {
         n: "1",
-        kicker: "STEP 1",
-        h2: `${place}${name}분양 전, 기준을 먼저 세워야 하는 이유`,
+        kicker: "1단계 · 준비",
+        h2: `${place} ${name} 분양, 먼저 질문해 볼 것`,
         paragraphs: step1Paras,
         items: homeItems,
-        itemLabel: "확인할 사항",
+        itemLabel: "집에서 확인할 것",
       },
       {
         n: "2",
-        kicker: "STEP 2",
-        h2: `분양 전, ${place} 집 환경부터 준비해야 합니다`,
+        kicker: "2단계 · 환경",
+        h2: `${place} 집, ${name}이 편해질 공간 만들기`,
         paragraphs: step2Paras,
       },
       {
         n: "3",
-        kicker: "STEP 3",
-        h2: `${place} ${name}분양, 안전한 진행 순서`,
+        kicker: "3단계 · 만남",
+        h2: `${place} ${name} 분양, 이렇게 진행해요`,
         paragraphs: step3Paras,
         items: processItems,
-        itemLabel: "진행 순서",
+        itemLabel: "만남 순서",
       },
       {
         n: "4",
-        kicker: "STEP 4",
-        h2: `대면 관찰 포인트, ${baby} 컨디션은 이렇게`,
+        kicker: "4단계 · 관찰",
+        h2: `직접 만날 때, ${baby} 건강은 이렇게 봐요`,
         paragraphs: [observeLead],
       },
       {
         n: "5",
-        kicker: "STEP 5",
-        h2: `${place}${name}분양 시 주의해야 할 상황`,
+        kicker: "5단계 · 주의",
+        h2: `${place} ${name} 분양, 이런 경우는 잠깐 멈추세요`,
         paragraphs: step5Paras,
       },
     ],
@@ -529,11 +529,11 @@ export function buildBreedContent(
       cards: observeCards,
     },
     care: {
-      kicker: `${SITE.brand} 안내`,
-      h2: `${place} ${name}분양을 이어서 돕는 관리`,
-      lead: `${pet}을 키우다 보면 병원·미용·용품을 각각 알아보게 됩니다. ${SITE.brand}은 ${place} ${kw} 상담부터 초기 적응까지 한 흐름으로 안내합니다.`,
+      kicker: `${SITE.brand} 케어`,
+      h2: `${place} ${name} 분양 이후에도 함께해요`,
+      lead: `${pet}과 함께하면 병원·미용·용품 질문이 자연스럽게 생깁니다. ${SITE.brand}는 ${place} ${kw} 상담부터 첫 주 적응까지 이어서 도와 드립니다.`,
       items: careItems,
-      closer: `상담 → 기록 확인 → 인계 → 적응 안내, ${place} 반려생활의 시작을 원스톱으로`,
+      closer: `상담 → 건강 확인 → 만남 → 적응 팁, ${place}에서 ${name}과 시작하는 첫 주`,
     },
     local: { h2: localH2, paragraphs: localParas },
     faqs,

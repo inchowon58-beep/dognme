@@ -7,26 +7,25 @@ import { SITE, CTA_KAKAO } from "@/lib/site";
 import { useKakaoHref } from "./KakaoHrefProvider";
 
 const NAV = [
-  { href: "/#breeds", label: "품종" },
+  { href: "/#dogs", label: "품종" },
   { href: "/guide", label: "지역안내" },
   { href: "/bunyang", label: "전체분양" },
 ];
 
 function BrandMark() {
   return (
-    <Link href="/" className="flex items-center gap-3">
+    <Link href="/" className="flex items-center gap-2.5">
       <span
         aria-hidden
-        className="hidden h-8 w-px bg-[#c9a56a] sm:block"
-      />
+        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#ff6b4a] text-sm font-extrabold text-white"
+      >
+        D
+      </span>
       <span className="flex flex-col leading-none">
-        <span className="text-[0.58rem] font-medium tracking-[0.38em] text-[#c9a56a]">
+        <span className="text-[0.58rem] font-bold tracking-[0.28em] text-[#ff6b4a] uppercase">
           {SITE.brandEn}
         </span>
-        <span
-          className="mt-1 text-[1.28rem] font-semibold tracking-[0.12em] text-white"
-          style={{ fontFamily: '"Cormorant Garamond", "Times New Roman", serif' }}
-        >
+        <span className="mt-0.5 text-[1.15rem] font-extrabold tracking-tight text-[#1a1a2e]">
           {SITE.brand}
         </span>
       </span>
@@ -39,15 +38,13 @@ export default function Header() {
   const href = useKakaoHref();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0e0c0a] text-white">
-      <div className="h-px bg-[linear-gradient(90deg,transparent,#c9a56a,transparent)]" />
-
-      <div className="container flex h-[3.7rem] items-center justify-between md:h-[4.5rem]">
+    <header className="sticky top-0 z-50 border-b border-[#ffe8df] bg-white/95 text-[#1a1a2e] backdrop-blur-md">
+      <div className="container flex h-[3.5rem] items-center justify-between md:h-[4rem]">
         <BrandMark />
 
-        <nav className="hidden items-center gap-8 text-[0.78rem] font-medium tracking-[0.18em] text-white/60 lg:flex">
+        <nav className="hidden items-center gap-7 text-[0.85rem] font-semibold text-[#5a5a72] lg:flex">
           {NAV.map((item) => (
-            <Link key={item.href} href={item.href} className="uppercase hover:text-[#c9a56a]">
+            <Link key={item.href} href={item.href} className="hover:text-[#ff6b4a]">
               {item.label}
             </Link>
           ))}
@@ -59,7 +56,7 @@ export default function Header() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-1.5 border border-[#c9a56a] px-3.5 py-2 text-[0.72rem] font-bold tracking-[0.14em] text-[#c9a56a] uppercase sm:inline-flex hover:bg-[#c9a56a] hover:text-[#1a140c]"
+              className="hidden items-center gap-1.5 rounded-full bg-[#ff6b4a] px-4 py-2 text-[0.78rem] font-bold text-white sm:inline-flex hover:bg-[#e85535]"
             >
               <MessageCircle size={14} />
               {CTA_KAKAO}
@@ -67,7 +64,7 @@ export default function Header() {
           ) : null}
           <button
             type="button"
-            className="inline-flex p-2 text-white lg:hidden"
+            className="inline-flex p-2 text-[#1a1a2e] lg:hidden"
             aria-label="메뉴"
             onClick={() => setOpen((v) => !v)}
           >
@@ -77,13 +74,13 @@ export default function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-[#0e0c0a] px-4 py-3 lg:hidden">
+        <div className="border-t border-[#ffe8df] bg-white px-4 py-3 lg:hidden">
           <nav className="flex flex-col gap-1">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-sm px-3 py-2.5 text-sm font-medium tracking-[0.12em] text-white/90 hover:bg-white/8"
+                className="rounded-lg px-3 py-2.5 text-sm font-semibold text-[#1a1a2e] hover:bg-[#fff5f0]"
                 onClick={() => setOpen(false)}
               >
                 {item.label}
@@ -94,7 +91,7 @@ export default function Header() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-1 inline-flex items-center gap-2 border border-[#c9a56a] px-3 py-2.5 text-sm font-bold text-[#c9a56a]"
+                className="mt-1 inline-flex items-center gap-2 rounded-full bg-[#ff6b4a] px-4 py-2.5 text-sm font-bold text-white"
                 onClick={() => setOpen(false)}
               >
                 <MessageCircle size={16} />

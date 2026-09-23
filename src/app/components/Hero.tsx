@@ -1,54 +1,71 @@
 "use client";
 
 import Link from "next/link";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ShieldCheck, Heart, MapPin } from "lucide-react";
 import { SITE, CTA_KAKAO } from "@/lib/site";
-import { breedPath } from "@/lib/breed-paths";
 import { useKakaoHref } from "./KakaoHrefProvider";
 
-const HERO_SHOTS = [
-  { slug: "포메라니안", name: "포메라니안", src: "https://image.cattery.co.kr/pome/01.webp" },
-  { slug: "랙돌", name: "랙돌", src: "https://image.cattery.co.kr/ragdoll/01.webp" },
-  { slug: "골든리트리버", name: "골든리트리버", src: "https://image.cattery.co.kr/coldenret/01.webp" },
-] as const;
+const TRUST = [
+  { icon: ShieldCheck, text: "건강 기록부터 확인" },
+  { icon: Heart, text: "서두르지 않는 분양" },
+  { icon: MapPin, text: "전국 지역별 안내" },
+];
 
 export default function Hero() {
   const kakaoHref = useKakaoHref();
   return (
-    <section id="top" className="home-hero container">
-      <div className="home-hero-copy">
-        <p className="home-kicker">{SITE.brandEn}</p>
-        <h1 className="home-title">{SITE.brand}</h1>
-        <p className="home-lead">
-          견종과 묘종을 사진으로 고르고, 자세한 성격·크기·키우기는 각 품종 페이지에서
-          확인하세요.
-        </p>
-        <p className="home-note">{SITE.tagline}</p>
-        <div className="home-actions">
-          <a href="#breeds" className="home-btn home-btn-gold">
-            품종 둘러보기
-          </a>
-          {kakaoHref ? (
-            <a
-              href={kakaoHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="home-btn home-btn-ghost"
-            >
-              <MessageCircle size={16} />
-              {CTA_KAKAO}
+    <section id="top" className="dm-hero">
+      <div className="container dm-hero-inner">
+        <div className="dm-hero-copy">
+          <p className="dm-hero-badge">{SITE.brandEn}</p>
+          <h1 className="dm-hero-title">
+            {SITE.brand}에서
+            <br />
+            <em>강아지·고양이 분양</em>을
+            <br />
+            시작해 보세요
+          </h1>
+          <p className="dm-hero-desc">
+            예쁜 사진만으로 결정하지 않습니다. 품종·지역·가족 구성에 맞춰 차근차근 안내해 드리니,
+            <strong> 여기서 분양 상담</strong> 받아 보셔도 괜찮습니다.
+          </p>
+          <ul className="dm-hero-trust">
+            {TRUST.map(({ icon: Icon, text }) => (
+              <li key={text}>
+                <Icon size={16} aria-hidden />
+                {text}
+              </li>
+            ))}
+          </ul>
+          <div className="dm-hero-actions">
+            <a href="#dogs" className="dm-btn dm-btn-primary">
+              견종 갤러리
             </a>
-          ) : null}
+            <a href="#cats" className="dm-btn dm-btn-soft">
+              묘종 갤러리
+            </a>
+            {kakaoHref ? (
+              <a
+                href={kakaoHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dm-btn dm-btn-outline"
+              >
+                <MessageCircle size={16} />
+                {CTA_KAKAO}
+              </a>
+            ) : null}
+          </div>
         </div>
-      </div>
-      <div className="home-hero-gallery">
-        {HERO_SHOTS.map((shot) => (
-          <Link key={shot.slug} href={breedPath(shot.slug)} className="home-hero-shot">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={shot.src} alt={`${shot.name} 분양`} />
-            <span>{shot.name}</span>
-          </Link>
-        ))}
+        <div className="dm-hero-visual">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="https://image.cattery.co.kr/pome/01.webp" alt="도그앤미 강아지 분양" />
+          <div className="dm-hero-visual-card">
+            <strong>도그앤미</strong>
+            <span>전국 견종·묘종 · 보호소 안내</span>
+            <Link href="/bunyang">지역별 보기 →</Link>
+          </div>
+        </div>
       </div>
     </section>
   );

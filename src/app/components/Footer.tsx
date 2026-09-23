@@ -8,58 +8,53 @@ import { useKakaoHref } from "./KakaoHrefProvider";
 export default function Footer() {
   const kakaoHref = useKakaoHref();
   return (
-    <footer className="border-t border-white/10 bg-[#0e0c0a] py-12 text-[#f4efe6]">
+    <footer className="border-t border-[#ffe8df] bg-[#fff8f4] py-12 text-[#1a1a2e]">
       <div className="container grid gap-8 md:grid-cols-[1.2fr_1fr]">
         <div>
           <Link href="/" className="inline-block">
-            <p className="text-[0.62rem] font-semibold tracking-[0.38em] text-[#c9a56a]">{SITE.brandEn}</p>
-            <h2
-              className="mt-1 text-3xl font-semibold tracking-[0.12em] hover:text-white"
-              style={{ fontFamily: '"Cormorant Garamond", "Times New Roman", serif' }}
-            >
-              {SITE.brand}
-            </h2>
+            <p className="text-[0.62rem] font-bold tracking-[0.28em] text-[#ff6b4a] uppercase">{SITE.brandEn}</p>
+            <h2 className="mt-1 text-2xl font-extrabold tracking-tight hover:text-[#ff6b4a]">{SITE.brand}</h2>
           </Link>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/55">{SITE.tagline}</p>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-[#5a5a72]">{SITE.tagline}</p>
         </div>
 
-        <div className="space-y-3 text-sm text-white/70">
+        <div className="space-y-3 text-sm text-[#5a5a72]">
           {kakaoHref ? (
             <a
               href={kakaoHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-[#c9a56a]"
+              className="flex items-center gap-2 font-semibold hover:text-[#ff6b4a]"
             >
-              <MessageCircle size={16} className="text-[#c9a56a]" />
+              <MessageCircle size={16} className="text-[#ff6b4a]" />
               {CTA_KAKAO}
             </a>
           ) : null}
           <p className="flex items-start gap-2">
-            <MapPin size={16} className="mt-0.5 shrink-0 text-[#c9a56a]" />
+            <MapPin size={16} className="mt-0.5 shrink-0 text-[#ff6b4a]" />
             {SITE.location} · {SITE.address}
           </p>
-          <div className="flex flex-wrap items-center gap-3 pt-3">
+          <div className="flex flex-wrap items-center gap-2 pt-3">
             <Link
-              href="/#breeds"
-              className="inline-flex border border-white/20 px-3 py-2 text-xs font-semibold tracking-[0.12em] text-white/80 transition hover:border-[#c9a56a] hover:text-[#c9a56a]"
+              href="/#dogs"
+              className="inline-flex rounded-full border border-[#ffd4c4] px-3.5 py-1.5 text-xs font-semibold hover:border-[#ff6b4a] hover:text-[#ff6b4a]"
             >
               품종
             </Link>
             <Link
               href="/bunyang"
-              className="inline-flex border border-white/20 px-3 py-2 text-xs font-semibold tracking-[0.12em] text-white/80 transition hover:border-[#c9a56a] hover:text-[#c9a56a]"
+              className="inline-flex rounded-full border border-[#ffd4c4] px-3.5 py-1.5 text-xs font-semibold hover:border-[#ff6b4a] hover:text-[#ff6b4a]"
             >
               전체분양
             </Link>
             <Link
               href="/admin"
-              className="inline-flex border border-white/20 px-3 py-2 text-xs font-semibold tracking-[0.12em] text-white/80 transition hover:border-[#c9a56a] hover:text-[#c9a56a]"
+              className="inline-flex rounded-full border border-[#ffd4c4] px-3.5 py-1.5 text-xs font-semibold hover:border-[#ff6b4a] hover:text-[#ff6b4a]"
             >
               관리자
             </Link>
           </div>
-          <p className="pt-2 text-xs text-white/30">
+          <p className="pt-2 text-xs text-[#9a9ab0]">
             © {new Date().getFullYear()} {SITE.name}
           </p>
         </div>

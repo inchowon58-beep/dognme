@@ -44,7 +44,7 @@ const TOTAL_SIGUNGU = KOREA_REGIONS.length;
 const TOTAL_DONGS = KOREA_REGIONS.reduce((n, r) => n + r.dongs.length, 0);
 
 const REGION_SOURCE =
-  "행정구역 범위는 디어펫이 분양 안내를 위해 정리한 시·도·시군구·동 목록입니다.";
+  "행정구역 범위는 도그앤미가 분양 안내를 위해 정리한 시·도·시군구·동 목록입니다.";
 
 function bizTable(caption: string, items: BizItem[], fallback: boolean): LocalTable | null {
   if (!items.length) return null;

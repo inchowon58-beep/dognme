@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next";
 import { listPageSummaries } from "@/lib/seo-pages";
 import { publicOrigin } from "@/lib/public-url";
 import { BREEDS, SPECIES_BREEDS } from "@/lib/breeds";
-import { breedPath } from "@/lib/breed-paths";
-import { KOREA_REGIONS, POPULAR_REGION_KEYS, SIDOS, SIDO_SHORT_NAMES, getSigunguByKey } from "@/lib/korea-regions";
+import { breedPath, breedTopicPath } from "@/lib/breed-paths";
+import { BREED_TOPIC_SLUGS } from "@/lib/breed-topics";
+import { KOREA_REGIONS, POPULAR_REGION_KEYS, SIDO_SHORT_NAMES, getSigunguByKey } from "@/lib/korea-regions";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -48,22 +49,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const sidoPages: MetadataRoute.Sitemap = [];
+  const topicPages: MetadataRoute.Sitemap = [];
   for (const breed of BREEDS) {
-    for (const sido of SIDOS) {
-      sidoPages.push({
-        url: `${base}${breedPath(breed.slug, sido)}`,
+    for (const topic of BREED_TOPIC_SLUGS) {
+      topicPages.push({
+        url: `${base}${breedTopicPath(breed.slug, topic)}`,
         lastModified: now,
         changeFrequency: "weekly",
-        priority: 0.72,
+        priority: 0.78,
       });
     }
+  }
+
+  const sidoPages: MetadataRoute.Sitemap = [];
+  for (const breed of BREEDS) {
     for (const sido of SIDO_SHORT_NAMES) {
       sidoPages.push({
         url: `${base}${breedPath(breed.slug, sido)}`,
         lastModified: now,
         changeFrequency: "weekly",
-        priority: 0.7,
+        priority: 0.72,
       });
     }
   }
@@ -96,5 +101,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  return [...staticRoutes, ...guides, ...breedHubs, ...sidoPages, ...sigunguPages, ...dongPages];
+  return [
+    ...staticRoutes,
+    ...guides,
+    ...breedHubs,
+    ...topicPages,
+    ...sidoPages,
+    ...sigunguPages,
+    ...dongPages,
+  ];
 }

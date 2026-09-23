@@ -3,9 +3,15 @@ import { notFound } from "next/navigation";
 import { BREEDS, getBreed, isBreedSlug } from "@/lib/breeds";
 import { buildBreedContent } from "@/lib/breed-content";
 import { breedJsonLd, breedMetadata } from "@/lib/breed-meta";
-import { getSigunguByKey, parseSidoName, POPULAR_REGION_KEYS, SIDOS, SIDO_SHORT_NAMES } from "@/lib/korea-regions";
+import {
+  BREED_TOPIC_SLUGS,
+  buildBreedTopicContent,
+  isBreedTopicSlug,
+  type BreedTopicSlug,
+} from "@/lib/breed-topics";
+import { getSigunguByKey, parseSidoName, POPULAR_REGION_KEYS, SIDO_SHORT_NAMES } from "@/lib/korea-regions";
 import { publicOrigin } from "@/lib/public-url";
-import { breedPath } from "@/lib/breed-paths";
+import { breedPath, breedTopicPath } from "@/lib/breed-paths";
 import BreedLanding from "@/app/components/BreedLanding";
 
 type Props = { params: Promise<{ breed: string; sidoSigungu: string }> };
@@ -16,8 +22,8 @@ export const dynamicParams = true;
 export function generateStaticParams() {
   const params: { breed: string; sidoSigungu: string }[] = [];
   for (const breed of BREEDS) {
-    for (const sido of SIDOS) {
-      params.push({ breed: breed.slug, sidoSigungu: sido });
+    for (const topic of BREED_TOPIC_SLUGS) {
+      params.push({ breed: breed.slug, sidoSigungu: topic });
     }
     for (const sido of SIDO_SHORT_NAMES) {
       params.push({ breed: breed.slug, sidoSigungu: sido });
@@ -40,17 +46,49 @@ function resolveRegion(sidoSigungu: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { breed: raw, sidoSigungu } = await params;
   const breed = getBreed(raw);
+  if (!breed || !isBreedSlug(raw)) return { title: "페이지 없음" };
+
+  if (isBreedTopicSlug(sidoSigungu)) {
+    return breedMetadata(breed, await publicOrigin(), undefined, undefined, undefined, sidoSigungu);
+  }
+
   const region = resolveRegion(sidoSigungu);
-  if (!breed || !isBreedSlug(raw) || !region) return { title: "페이지 없음" };
+  if (!region) return { title: "페이지 없음" };
   return breedMetadata(breed, await publicOrigin(), region.sido, region.sigungu);
 }
 
-export default async function BreedRegionPage({ params }: Props) {
+export default async function BreedSubPage({ params }: Props) {
   const { breed: raw, sidoSigungu } = await params;
   const breed = getBreed(raw);
-  const region = resolveRegion(sidoSigungu);
-  if (!breed || !isBreedSlug(raw) || !region) notFound();
+  if (!breed || !isBreedSlug(raw)) notFound();
+
   const origin = await publicOrigin();
+
+  if (isBreedTopicSlug(sidoSigungu)) {
+    const topic = sidoSigungu as BreedTopicSlug;
+    const content = buildBreedTopicContent(breed, topic);
+    const jsonLd = breedJsonLd(breed, origin, undefined, undefined, undefined, topic);
+    return (
+      <>
+        {jsonLd.map((block, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
+          />
+        ))}
+        <BreedLanding
+          breed={breed}
+          content={content}
+          pagePath={breedTopicPath(breed.slug, topic)}
+          topicSlug={topic}
+        />
+      </>
+    );
+  }
+
+  const region = resolveRegion(sidoSigungu);
+  if (!region) notFound();
   const content = buildBreedContent(breed, region.sido, region.sigungu);
   const jsonLd = breedJsonLd(breed, origin, region.sido, region.sigungu);
 

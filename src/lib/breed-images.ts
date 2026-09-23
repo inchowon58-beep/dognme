@@ -168,6 +168,26 @@ export type BreedPhotos = {
   all: string[];
 };
 
+export type ScatteredPhoto = {
+  src: string;
+  alt: string;
+  variant: "wide" | "aside" | "inline";
+};
+
+/** 본문 중간에 3~5장 랜덤 배치 */
+export function breedScatteredPhotos(breed: Breed, salt = "", place = ""): ScatteredPhoto[] {
+  const rng = mulberry32(hashSlug(`${breed.slug}|${salt}|scatter`) ^ 0xabc);
+  const count = 3 + Math.floor(rng() * 3);
+  const images = pickBreedImages(breed, count + 2, `${salt}|scatter`);
+  const variants: ScatteredPhoto["variant"][] = ["wide", "aside", "inline", "wide", "inline"];
+  const label = place ? `${place} ${breed.name}` : breed.name;
+  return images.slice(0, count).map((src, i) => ({
+    src,
+    alt: `${label} 사진 ${i + 1}`,
+    variant: variants[i % variants.length],
+  }));
+}
+
 export function breedPhotos(breed: Breed, salt = ""): BreedPhotos {
   const urls = pickBreedImages(breed, 16, salt);
   return {

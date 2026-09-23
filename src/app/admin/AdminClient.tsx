@@ -42,7 +42,7 @@ export default function AdminClient() {
   const isSponsor = role === "sponsor";
 
   function absolutePageUrl(path: string) {
-    const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://deatpet.breederclub.co.kr").replace(
+    const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://dognme.vercel.app").replace(
       /\/$/,
       ""
     );

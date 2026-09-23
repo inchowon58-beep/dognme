@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  /* 와일드쿤 — indigo / saffron / parchment */
-  --sky: #243056;
-  --sky-deep: #243056;
-  --sky-soft: #e8ebf4;
-  --coral: #d4a017;
-  --coral-deep: #b8880e;
-  --coral-soft: #f4ead0;
-  --ink: #1e2433;
-  --muted: #5c6270;
-  --bg: #f7f3ea;
-  --bg-warm: #fbf8f2;
-  --line: rgba(36, 48, 86, 0.14);
-  --radius: 0.5rem;
-  --radius-sm: 0.35rem;
-  --radius-lg: 0.7rem;
+  /* 도그앤미 — coral / mint / warm white */
+  --sky: #2d9cdb;
+  --sky-deep: #1a7ab0;
+  --sky-soft: #e0f2fa;
+  --coral: #ff6b4a;
+  --coral-deep: #e85535;
+  --coral-soft: #ffe8df;
+  --ink: #1a1a2e;
+  --muted: #5a5a72;
+  --bg: #fff8f4;
+  --bg-warm: #fffdfb;
+  --line: rgba(255, 107, 74, 0.18);
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-lg: 1rem;
   --font: "Pretendard", "Noto Sans KR", sans-serif;
-  --navy: #243056;
-  --green: #243056;
+  --navy: #1a1a2e;
+  --green: #2d9cdb;
   --orange: var(--coral);
   --orange-deep: var(--coral-deep);
   --orange-soft: var(--coral-soft);
@@ -35,8 +35,7 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  background:
-    linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 48%, #ece6d8 100%);
+  background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 60%, #fff0ea 100%);
   font-family: var(--font);
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;

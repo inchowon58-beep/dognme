@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BREEDS, getBreed, isBreedSlug } from "@/lib/breeds";
 import { buildBreedContent } from "@/lib/breed-content";
+import { applyNationalHubContent } from "@/lib/breed-topics";
 import { breedJsonLd, breedMetadata } from "@/lib/breed-meta";
 import { publicOrigin } from "@/lib/public-url";
 import { breedPath } from "@/lib/breed-paths";
@@ -28,7 +29,7 @@ export default async function BreedHubPage({ params }: Props) {
   const breed = getBreed(raw);
   if (!breed || !isBreedSlug(raw)) notFound();
   const origin = await publicOrigin();
-  const content = buildBreedContent(breed);
+  const content = applyNationalHubContent(buildBreedContent(breed), breed);
   const jsonLd = breedJsonLd(breed, origin);
 
   return (
@@ -40,7 +41,12 @@ export default async function BreedHubPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
         />
       ))}
-      <BreedLanding breed={breed} content={content} pagePath={breedPath(breed.slug)} />
+      <BreedLanding
+        breed={breed}
+        content={content}
+        pagePath={breedPath(breed.slug)}
+        nationalHub
+      />
     </>
   );
 }

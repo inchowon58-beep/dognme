@@ -5,8 +5,8 @@ export type FaqItem = { q: string; a: string };
 /** 메인·AEO용 자주 묻는 질문 */
 export const HOME_FAQS: FaqItem[] = [
   {
-    q: "디어펫은 어떤 곳인가요?",
-    a: "견종·묘종을 품종별로 안내하는 분양 사이트입니다. 메인에서 사진으로 품종을 고르신 뒤, 각 품종 페이지에서 성격·크기·키우기를 확인합니다.",
+    q: "도그앤미는 어떤 곳인가요?",
+    a: "반려견·반려묘 품종을 사진으로 안내하는 분양 사이트입니다. 마음에 드는 품종을 고른 뒤, 각 페이지에서 성격·크기·키우기 팁을 확인합니다.",
   },
   {
     q: "품종 안내는 어디서 보나요?",
@@ -61,8 +61,8 @@ export function howToJsonLd(pageUrl?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "디어펫에서 품종을 고르는 순서",
-    description: "품종 선택, 상세 안내 확인, 상담까지 디어펫 분양 안내.",
+    name: "도그앤미에서 품종을 고르는 순서",
+    description: "품종 선택, 상세 안내 확인, 상담까지 도그앤미 분양 안내.",
     inLanguage: "ko-KR",
     totalTime: "PT2H",
     url: pageUrl || SITE.siteUrl,

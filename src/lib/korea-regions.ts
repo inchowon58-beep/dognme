@@ -334,16 +334,25 @@ export function shortSidoName(official: string): string | undefined {
   return SIDO_SHORT[official];
 }
 
-/** 칩·사이트맵용: 서울특별시 다음에 서울 */
+/** 화면·URL용 짧은 시·도명 (대전광역시 → 대전) */
+export function displaySido(sido: string): string {
+  const official = canonicalSido(sido) || sido;
+  return SIDO_SHORT[official] || official;
+}
+
+/** URL 세그먼트용 시·도 (항상 짧은 이름) */
+export function regionUrlSido(sido: string): string {
+  return displaySido(sido);
+}
+
+/** URL 세그먼트용 시·군·구 키 (대전_유성구) */
+export function regionUrlKey(sido: string, sigungu: string): string {
+  return `${regionUrlSido(sido)}_${sigungu}`;
+}
+
+/** 칩·링크용: 짧은 시·도명만 */
 export function sidoChipNames(excludeOfficial?: string): string[] {
-  const out: string[] = [];
-  for (const s of SIDOS) {
-    if (excludeOfficial && s === excludeOfficial) continue;
-    out.push(s);
-    const short = SIDO_SHORT[s];
-    if (short) out.push(short);
-  }
-  return out;
+  return SIDOS.filter((s) => s !== excludeOfficial).map((s) => SIDO_SHORT[s] || s);
 }
 
 export function parseSidoName(raw: string): string | null {
@@ -405,41 +414,41 @@ export function neighborDongs(sido: string, sigungu: string, dong: string, count
 }
 
 export function areaLabel(sido: string, sigungu?: string, dong?: string): string {
-  return [sido, sigungu, dong].filter(Boolean).join(" ");
+  return [displaySido(sido), sigungu, dong].filter(Boolean).join(" ");
 }
 
-/** 빌드 타임 사전 생성용 인기 시·군·구 */
+/** 빌드 타임 사전 생성용 인기 시·군·구 (짧은 시·도명) */
 export const POPULAR_REGION_KEYS = [
-  "서울특별시_강남구",
-  "서울특별시_서초구",
-  "서울특별시_송파구",
-  "서울특별시_마포구",
-  "서울특별시_강서구",
-  "서울특별시_노원구",
-  "서울특별시_관악구",
-  "서울특별시_영등포구",
-  "경기도_수원시",
-  "경기도_성남시",
-  "경기도_용인시",
-  "경기도_고양시",
-  "경기도_화성시",
-  "경기도_부천시",
-  "경기도_남양주시",
-  "경기도_김포시",
-  "경기도_하남시",
-  "경기도_평택시",
-  "경기도_파주시",
-  "인천광역시_연수구",
-  "인천광역시_부평구",
-  "인천광역시_서구",
-  "부산광역시_해운대구",
-  "부산광역시_부산진구",
-  "대구광역시_수성구",
-  "대전광역시_유성구",
-  "광주광역시_북구",
-  "제주특별자치도_제주시",
-  "세종특별자치시_세종시",
-  "충청남도_천안시",
-  "충청북도_청주시",
-  "전북특별자치도_전주시",
+  "서울_강남구",
+  "서울_서초구",
+  "서울_송파구",
+  "서울_마포구",
+  "서울_강서구",
+  "서울_노원구",
+  "서울_관악구",
+  "서울_영등포구",
+  "경기_수원시",
+  "경기_성남시",
+  "경기_용인시",
+  "경기_고양시",
+  "경기_화성시",
+  "경기_부천시",
+  "경기_남양주시",
+  "경기_김포시",
+  "경기_하남시",
+  "경기_평택시",
+  "경기_파주시",
+  "인천_연수구",
+  "인천_부평구",
+  "인천_서구",
+  "부산_해운대구",
+  "부산_부산진구",
+  "대구_수성구",
+  "대전_유성구",
+  "광주_북구",
+  "제주_제주시",
+  "세종_세종시",
+  "충남_천안시",
+  "충북_청주시",
+  "전북_전주시",
 ] as const;
