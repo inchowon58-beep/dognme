@@ -33,7 +33,7 @@ export const SITE = {
   domain: "dognme.vercel.app",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://dognme.vercel.app",
   infocsUrl: "https://www.infocs.co.kr/",
-  naverSiteVerification: "",
+  naverSiteVerification: "81c70f9370fbb3be9bc0c7dea13ef4928ec156ab",
   themeColor: "#fff8f4",
 } as const;
 

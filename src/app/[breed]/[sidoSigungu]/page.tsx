@@ -6,8 +6,7 @@ import { breedJsonLd, breedMetadata } from "@/lib/breed-meta";
 import {
   BREED_TOPIC_SLUGS,
   buildBreedTopicContent,
-  isBreedTopicSlug,
-  type BreedTopicSlug,
+  parseBreedTopicSlug,
 } from "@/lib/breed-topics";
 import { getSigunguByKey, parseSidoName, POPULAR_REGION_KEYS, SIDO_SHORT_NAMES } from "@/lib/korea-regions";
 import { publicOrigin } from "@/lib/public-url";
@@ -48,8 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const breed = getBreed(raw);
   if (!breed || !isBreedSlug(raw)) return { title: "페이지 없음" };
 
-  if (isBreedTopicSlug(sidoSigungu)) {
-    return breedMetadata(breed, await publicOrigin(), undefined, undefined, undefined, sidoSigungu);
+  const topic = parseBreedTopicSlug(sidoSigungu);
+  if (topic) {
+    return breedMetadata(breed, await publicOrigin(), undefined, undefined, undefined, topic);
   }
 
   const region = resolveRegion(sidoSigungu);
@@ -64,8 +64,8 @@ export default async function BreedSubPage({ params }: Props) {
 
   const origin = await publicOrigin();
 
-  if (isBreedTopicSlug(sidoSigungu)) {
-    const topic = sidoSigungu as BreedTopicSlug;
+  const topic = parseBreedTopicSlug(sidoSigungu);
+  if (topic) {
     const content = buildBreedTopicContent(breed, topic);
     const jsonLd = breedJsonLd(breed, origin, undefined, undefined, undefined, topic);
     return (

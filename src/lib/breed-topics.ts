@@ -18,8 +18,14 @@ export type BreedTopicSlug = (typeof BREED_TOPIC_SLUGS)[number];
 
 const TOPIC_SET = new Set<string>(BREED_TOPIC_SLUGS);
 
+/** URL·generateStaticParams 모두에서 쓸 수 있도록 토픽 슬러그를 한글 키로 맞춥니다. */
+export function parseBreedTopicSlug(raw: string): BreedTopicSlug | null {
+  const key = decodeURIComponent(raw || "").trim();
+  return TOPIC_SET.has(key) ? (key as BreedTopicSlug) : null;
+}
+
 export function isBreedTopicSlug(raw: string): raw is BreedTopicSlug {
-  return TOPIC_SET.has(decodeURIComponent(raw || "").trim());
+  return parseBreedTopicSlug(raw) !== null;
 }
 
 /** 화이트테리어분양가 처럼 붙는 키워드 */
@@ -49,10 +55,14 @@ function priceParagraphs(breed: Breed): string[] {
 }
 
 export function buildBreedTopicContent(breed: Breed, topic: BreedTopicSlug): BreedLandingContent {
+  const slug = parseBreedTopicSlug(topic);
+  if (!slug) {
+    throw new Error(`Unknown breed topic slug: ${topic}`);
+  }
   const base = buildBreedContent(breed);
   const enc = getEncyclopedia(breed);
   const kw = breed.keyword;
-  const tk = breedTopicKeyword(breed, topic);
+  const tk = breedTopicKeyword(breed, slug);
   const size = sizeClass(breed);
   const pet = breed.kind === "cat" ? "고양이" : breed.kind === "shelter" ? breed.noun : "강아지";
 
@@ -120,7 +130,7 @@ export function buildBreedTopicContent(breed: Breed, topic: BreedTopicSlug): Bre
     },
   };
 
-  const m = meta[topic];
+  const m = meta[slug];
 
   return {
     ...base,
