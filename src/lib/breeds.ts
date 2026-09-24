@@ -609,7 +609,7 @@ const ROWS: Row[] = [
   ],
   [
     "말티푸",
-    "pome",
+    "maltipoo",
     "dog",
     "말티즈×푸들 믹스",
     "소형",
@@ -622,7 +622,7 @@ const ROWS: Row[] = [
   ],
   [
     "말티즈",
-    "pome",
+    "maltese",
     "dog",
     "대표 소형견",
     "초소형",
@@ -635,7 +635,7 @@ const ROWS: Row[] = [
   ],
   [
     "비숑프리제(미니비숑)",
-    "pome",
+    "bishone",
     "dog",
     "솜사탕 같은 소형견",
     "소형",
@@ -648,7 +648,7 @@ const ROWS: Row[] = [
   ],
   [
     "토이푸들",
-    "pome",
+    "toypoodle",
     "dog",
     "지능 높은 소형견",
     "소형",
@@ -661,7 +661,7 @@ const ROWS: Row[] = [
   ],
   [
     "치와와",
-    "pome",
+    "chihuahua",
     "dog",
     "세계에서 가장 작은 견종",
     "초소형",
@@ -674,7 +674,7 @@ const ROWS: Row[] = [
   ],
   [
     "래브라도리트리버",
-    "pome",
+    "rabriter",
     "dog",
     "대표 가족견",
     "대형",
